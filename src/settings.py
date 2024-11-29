@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
@@ -13,7 +13,10 @@ DB_PATH = BASE_DIR / "db.sqlite3"
 
 
 class TelegramBotSettings(BaseModel):
-    token: str = os.getenv("TELEGRAM_BOT_TOKEN")
+    ADMIN_ID: str = os.getenv("ADMIN_ID")
+    BASE_SITE: str = os.getenv("BASE_SITE")
+    BOT_TOKEN: str = os.getenv("TELEGRAM_BOT_TOKEN")
+    WEBHOOK_PATH: str = f"/bot/{BOT_TOKEN}"
 
 
 class DbSettings(BaseModel):
@@ -29,6 +32,10 @@ class Settings(BaseSettings):
     db: DbSettings = DbSettings()
 
     telegram_bot: TelegramBotSettings = TelegramBotSettings()
+    
+    def get_webhook_url(self) -> str:
+        """Возвращает URL вебхука с кодированием специальных символов."""
+        return f"{self.telegram_bot.BASE_SITE}{self.telegram_bot.WEBHOOK_PATH}"
 
 
 settings = Settings()
