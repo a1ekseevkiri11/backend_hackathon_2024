@@ -8,7 +8,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from src.settings import settings
-from src.tgbot import bot, dp, start_bot, stop_bot
+from src.bot.__main__ import bot, dp, start_bot, stop_bot
 
 
 @asynccontextmanager
